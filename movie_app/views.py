@@ -40,7 +40,7 @@ def directors_detail(request, id):
 @api_view(['GET', 'POST'])
 def movies_api_view(request):
     if request.method == 'GET':
-        movies = Movie.objects.prefetch_related('reviews').all()
+        movies = Movie.objects.prefetch_related('reviews').only('id', 'title', 'description', 'release_date', 'director')
         serializer = MovieSerializer(movies, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
@@ -98,6 +98,6 @@ def reviews_detail(request, id):
 
 @api_view(['GET'])
 def movies_reviews_view(request):
-    movies = Movie.objects.prefetch_related('reviews').all()
+    movies = Movie.objects.prefetch_related('reviews').only('id', 'title', 'description', 'release_date', 'director')
     serializer = MovieSerializer(movies, many=True)
     return Response(serializer.data)
