@@ -25,6 +25,11 @@ SECRET_KEY = 'django-insecure-6p!z6)dz==h+suu9a91k154^mom=(1!6bn)0&pf4(%3n8p_7a*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+
 ALLOWED_HOSTS = []
 
 
@@ -40,6 +45,8 @@ INSTALLED_APPS = [
     'movie_app',
     'rest_framework',
     'querycount',
+    'users',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

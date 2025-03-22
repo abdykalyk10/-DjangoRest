@@ -19,9 +19,9 @@ class DirectorSerializer(serializers.ModelSerializer):
 class MovieSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
     reviews_count = serializers.IntegerField(source='reviews.count', read_only=True)
-    rating = serializers.FloatField(source='rating', read_only=True)
+    rating = serializers.FloatField() 
     director = DirectorSerializer(read_only=True)
 
     class Meta:
         model = Movie
-        fields = ['id', 'title', 'description', 'release_date', 'director', 'reviews', 'reviews_count', 'rating']
+        fields = '__all__'
