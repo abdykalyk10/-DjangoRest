@@ -16,11 +16,11 @@ class RegisterUserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
-        user.is_active = False  # Пользователь не активен до подтверждения
+        user.is_active = False  
         user.save()
         
         code = ConfirmationCode.objects.create(user=user, code=ConfirmationCode.generate_code())
-        # Здесь отправить email с кодом подтверждения (не забыть конфигурацию для send_mail)
+   
         
         return user
 
@@ -33,14 +33,14 @@ class LoginUserSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        # Проверяем, существует ли пользователь с таким именем
+     
         try:
             user = User.objects.get(username=data['username'])
         except User.DoesNotExist:
             logger.error(f"Пользователь с именем {data['username']} не найден.")
             raise serializers.ValidationError("Пользователь не найден.")
 
-        # Если пользователь найден, пытаемся аутентифицировать
+
         user = authenticate(username=data['username'], password=data['password'])
         if user is None:
             logger.error(f"Не удалось аутентифицировать пользователя {data['username']} с паролем {data['password']}.")

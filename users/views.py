@@ -24,9 +24,9 @@ def login_user_view(request):
     data = request.data
     try:
         serializer = LoginUserSerializer(data=data)
-        if serializer.is_valid():  # Проверяем, что данные валидны
+        if serializer.is_valid(): 
             user = serializer.validated_data['user']
-            token, _ = Token.objects.get_or_create(user=user)  # Создаем токен
+            token, _ = Token.objects.get_or_create(user=user)  
             return Response({"token": token.key}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
