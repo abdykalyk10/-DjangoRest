@@ -19,14 +19,13 @@ class RegisterUserSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
-        user.is_active = False  # Регистрация без активации
+        user.is_active = False
         user.save()
         
-        # Генерация и сохранение кода подтверждения
+        
         code = ConfirmationCode.objects.create(user=user, code=ConfirmationCode.generate_code())
         
-        # Здесь можно добавить логику отправки email с кодом
-        # send_confirmation_email(user.email, code)
+ 
         
         return user
 
@@ -40,7 +39,7 @@ class LoginUserSerializer(serializers.Serializer):
             logger.error(f"Пользователь с именем {data['username']} не найден.")
             raise serializers.ValidationError("Пользователь не найден.")
         
-        # Проверка на активность пользователя
+
         if not user.is_active:
             logger.error(f"Попытка авторизации неактивного пользователя {data['username']}.")
             raise serializers.ValidationError("Пользователь не активен.")
@@ -51,6 +50,7 @@ class LoginUserSerializer(serializers.Serializer):
             raise serializers.ValidationError("Неверные учетные данные.")
         
         return {'user': user}
+
 
 class ConfirmUserSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=100)
@@ -66,7 +66,7 @@ class ConfirmUserSerializer(serializers.Serializer):
         if code_record.code != data['confirmation_code']:
             raise serializers.ValidationError("Неверный код подтверждения.")
         
-        # Подтверждение пользователя
+    
         user.is_active = True
         user.save()
         
